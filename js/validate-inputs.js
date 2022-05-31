@@ -1,7 +1,5 @@
-// read form element
-// Event listeners
-//
-// Selektoren für name, lastname, mobile, password2
+
+// Selektoren für name, lastname, mobile, password
 
 const form = document.getElementById('form');
 const gender = document.getElementById('gender');
@@ -15,9 +13,6 @@ const message = document.getElementById('message');
 const file = document.getElementById('file');
 const button = document.getElementById('button')
 
-function alertdialog() {
-    alert('Hallo')
-}
 
 // Show input error message
 function showError(input, message) {
@@ -30,9 +25,10 @@ function showError(input, message) {
 // Show success outline
 function showSuccess(input) {
     const formControl = input.parentElement;
-    formControl.className = 'form-control success';
+    formControl.className = 'form-group success';
 }
 
+// Validierung Vornamen
 function checkSurname(input) {
     const regex = /^[a-z ,.'-]+$/i;
     if (regex.test(input.value.trim())) {
@@ -41,7 +37,7 @@ function checkSurname(input) {
         showError(input, 'Surname should not contain numbers')
     }
 }
-
+// Validierung Nachname
 function checkLastname(input) {
     const regex = /^[a-z ,.'-]+$/i;
     if (regex.test(input.value.trim())) {
@@ -60,23 +56,34 @@ function checkEmail(input) {
         showError(input, 'Email is not valid');
     }
 }
-
-function checkTel(input) {
-    var regex = /^\d{10}$/;
-    if (regex.text(input.value.trim())) {
+// Validierung Telefonnummer
+function checkTelefon(input) {
+    const regex = /^\d{10}$/;
+    if (regex.test(input.value.trim())) {
         showSuccess(input);
     } else {
         showError(input, 'Telephone Number is not valid');
     }
 }
 
-
+// Validierung Übereinstimmung Passwörter
 function matchPassword(input, repeatInput) {
     if (input === repeatInput) {
         showSuccess(input)
     } else {
         showError(input, 'Passwords don\'t match');
     }
+}
+
+// Validierung Datei Upload
+function checkDataUpload(input) {
+    const reg = /^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpeg|.JPEG|.gif|.GIF| .png|.PNG)$/;
+    if (reg.test(input.value.trim())) {
+        showSuccess(input);
+    } else {
+        showError(input, 'Data Type is not supported');
+    }
+
 }
 
 // Check required fields
@@ -117,16 +124,23 @@ function getFieldName(input) {
 }
 
 function validateForm() {
-    if (!checkRequired([name, lastname, email, password, repeatPassword, message])) {
+
         checkLength(name, 3, 15);
         checkLength(lastname, 2, 50)
         checkLength(password, 6, 10);
         checkEmail(email);
-        checkTel(number);
+        checkTelefon(number);
         matchPassword(password, repeatPassword);
         checkLastname(lastname)
         checkSurname(name);
-  // }
+}
+
+function onsubmit() {
+    if (!checkRequired([name, lastname, email, password, repeatPassword, message])){
+        alert("verschickt");
+    } else {
+        alert("nicht geklappt");
+    }
 }
 
 // Event listeners
