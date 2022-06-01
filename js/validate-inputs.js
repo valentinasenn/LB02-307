@@ -1,4 +1,3 @@
-
 // Selektoren für name, lastname, mobile, password
 
 const form = document.getElementById('form');
@@ -12,7 +11,6 @@ const number = document.getElementById('number');
 const message = document.getElementById('message');
 const file = document.getElementById('file');
 const button = document.getElementById('button')
-
 
 // Show input error message
 function showError(input, message) {
@@ -28,22 +26,53 @@ function showSuccess(input) {
     formControl.className = 'form-group success';
 }
 
+// Check required fields
+function checkRequired(inputArr) {
+    let isRequired = false;
+    inputArr.forEach(function (input) {
+        if (input.value.trim() === '') {
+            showError(input, `${getFieldName(input)} is required`);
+            isRequired = true;
+        } else {
+            showSuccess(input);
+        }
+    });
+    return isRequired;
+}
+
+// Check input length
+function checkLength(input, min, max) {
+    return input.value.length >= min && input.value.length <= max;
+}
+
+// Get fieldname
+function getFieldName(input) {
+    return input.id.charAt(0).toUpperCase() + input.id.slice(1);
+}
+
 // Validierung Vornamen
-function checkSurname(input) {
+function checkSurname(input, min, max) {
     const regex = /^[a-z ,.'-]+$/i;
-    if (regex.test(input.value.trim())) {
+    if (regex.test(input.value.trim()) && checkLength(input, min, max)) {
         showSuccess(input);
     } else {
-        showError(input, 'Surname should not contain numbers')
+        showError(
+            input,
+            `${getFieldName(input)} should contain between ${min} and ${max} symbols`
+        );
     }
 }
+
 // Validierung Nachname
-function checkLastname(input) {
+function checkLastname(input, min, max) {
     const regex = /^[a-z ,.'-]+$/i;
-    if (regex.test(input.value.trim())) {
+    if (regex.test(input.value.trim()) && checkLength(input, min, max)) {
         showSuccess(input);
     } else {
-        showError(input, 'Lastname should not contain numbers')
+        showError(
+            input,
+            `${getFieldName(input)} should contain between ${min} and ${max} symbols`
+        );
     }
 }
 
@@ -56,13 +85,17 @@ function checkEmail(input) {
         showError(input, 'Email is not valid');
     }
 }
-// Validierung Telefonnummer
-function checkTelefon(input) {
-    const regex = /^\d{10}$/;
-    if (regex.test(input.value.trim())) {
+
+// Check password is valid
+function checkPassword(input, min, max) {
+    const regex = /^(?=.*[A-Z])$/;
+    if (regex.test(input.value.trim()) && checkLength(input, min, max)) {
         showSuccess(input);
     } else {
-        showError(input, 'Telephone Number is not valid');
+        showError(
+            input,
+            `${getFieldName(input)} should contain between ${min} and ${max} symbols`
+        );
     }
 }
 
@@ -71,7 +104,17 @@ function matchPassword(input, repeatInput) {
     if (input === repeatInput) {
         showSuccess(input)
     } else {
-        showError(input, 'Passwords don\'t match');
+        showError(repeatInput, 'Passwords don\'t match');
+    }
+}
+
+// Validierung Telefonnummer
+function checkTelefon(input) {
+    const regex = /^\d{10}$/;
+    if (regex.test(input.value.trim())) {
+        showSuccess(input);
+    } else {
+        showError(input, 'Telephone Number is not valid');
     }
 }
 
@@ -83,60 +126,20 @@ function checkDataUpload(input) {
     } else {
         showError(input, 'Data Type is not supported');
     }
-
 }
 
-// Check required fields
-function checkRequired(inputArr) {
-    let isRequired = false;
-    inputArr.forEach(function (input) {
-        if (input.value.trim() === '') {
-            showError(input, `${getFieldName(input)} is required`);
-            isRequired = true;
-        } else {
-            showSuccess(input);
-        }
-    });
-
-    return isRequired;
-}
-
-// Check input length
-function checkLength(input, min, max) {
-    if (input.value.length < min) {
-        showError(
-            input,
-            `${getFieldName(input)} must be at least ${min} characters`
-        );
-    } else if (input.value.length > max) {
-        showError(
-            input,
-            `${getFieldName(input)} must be less than ${max} characters`
-        );
-    } else {
-        showSuccess(input);
-    }
-}
-
-// Get fieldname
-function getFieldName(input) {
-    return input.id.charAt(0).toUpperCase() + input.id.slice(1);
-}
-
-function validateForm() {
-
-        checkLength(name, 3, 15);
-        checkLength(lastname, 2, 50)
-        checkLength(password, 6, 10);
-        checkEmail(email);
-        checkTelefon(number);
-        matchPassword(password, repeatPassword);
-        checkLastname(lastname)
-        checkSurname(name);
+function validateForm(){
+    checkSurname(name, 3, 15);
+    checkLastname(lastname, 2, 50)
+    checkEmail(email);
+    checkPassword(password, 6, 10)
+    matchPassword(password, repeatPassword);
+    checkTelefon(number);
+    checkDataUpload(file);
 }
 
 function onsubmit() {
-    if (!checkRequired([name, lastname, email, password, repeatPassword, message])){
+    if (!checkRequired([name, lastname, email, password, repeatPassword, message])) {
         alert("verschickt");
     } else {
         alert("nicht geklappt");
