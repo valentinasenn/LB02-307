@@ -6,11 +6,12 @@ const name = document.getElementById('name');
 const lastname = document.getElementById('lastname');
 const email = document.getElementById('email');
 const password = document.getElementById('password');
-const repeatPassword = document.getElementById('passwordRepeat')
+const repeatPassword = document.getElementById('passwordRepeat');
 const number = document.getElementById('number');
 const message = document.getElementById('message');
 const file = document.getElementById('file');
-const button = document.getElementById('button')
+const checkbox = document.getElementById('checkbox');
+const button = document.getElementById('button');
 
 // Show input error message
 function showError(input, message) {
@@ -89,7 +90,7 @@ function checkEmail(input) {
 // Check password is valid
 function checkPassword(input, min, max) {
     const regex = /^(?=.*[A-Z])$/;
-    if (regex.test(input.value.trim()) && checkLength(input, min, max)) {
+    if (checkLength(input, min, max)) {
         showSuccess(input);
     } else {
         showError(
@@ -128,6 +129,16 @@ function checkDataUpload(input) {
     }
 }
 
+// Validierung Checkbox
+function checkCheckbox(input) {
+    if (input.checked()) {
+        showSuccess(input);
+    } else {
+        showError(input, 'AGB must be accepted.');
+    }
+
+}
+
 function validateForm(){
     checkSurname(name, 3, 15);
     checkLastname(lastname, 2, 50)
@@ -136,6 +147,7 @@ function validateForm(){
     matchPassword(password, repeatPassword);
     checkTelefon(number);
     checkDataUpload(file);
+    checkCheckbox(checkbox);
 }
 
 function onsubmit() {
