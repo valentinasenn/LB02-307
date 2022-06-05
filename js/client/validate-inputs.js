@@ -9,7 +9,6 @@ const password = document.getElementById('password');
 const repeatPassword = document.getElementById('passwordRepeat');
 const number = document.getElementById('number');
 const message = document.getElementById('message');
-const file = document.getElementById('file');
 const checkbox = document.getElementById('checkbox');
 const button = document.getElementById('button');
 
@@ -102,7 +101,7 @@ function checkPassword(input, min, max) {
 
 // Validierung Übereinstimmung Passwörter
 function matchPassword(input, repeatInput) {
-    if (input === repeatInput) {
+    if (password.value === passwordRepeat.value) {
         showSuccess(input)
     } else {
         showError(repeatInput, 'Passwords don\'t match');
@@ -119,24 +118,19 @@ function checkTelefon(input) {
     }
 }
 
-// Validierung Datei Upload
-function checkDataUpload(input) {
-    const reg = /^(([a-zA-Z]:)|(\\{2}\w+)\$?)(\\(\w[\w].*))+(.jpeg|.JPEG|.gif|.GIF| .png|.PNG)$/;
-    if (reg.test(input.value.trim())) {
-        showSuccess(input);
-    } else {
-        showError(input, 'Data Type is not supported');
-    }
-}
-
 // Validierung Checkbox
 function checkCheckbox(input) {
-    if (input.checked()) {
+    if (input.checked) {
         showSuccess(input);
     } else {
         showError(input, 'AGB must be accepted.');
     }
+}
 
+if (document.getElementById("checkbox").checked) {
+    showSuccess();
+} else {
+    showError('Telephone Number is not valid');
 }
 
 function validateForm(){
@@ -146,17 +140,19 @@ function validateForm(){
     checkPassword(password, 6, 10)
     matchPassword(password, repeatPassword);
     checkTelefon(number);
-    checkDataUpload(file);
     checkCheckbox(checkbox);
 }
 
-function onsubmit() {
-    if (!checkRequired([name, lastname, email, password, repeatPassword, message])) {
-        alert("verschickt");
+function validateAllInputs() {
+    if (!checkRequired([name, lastname, email, password, repeatPassword, message, checkbox])) {
+        alert("Ihre Daten wurden erfolgreich erfasst.");
     } else {
-        alert("nicht geklappt");
+        alert("Bitte korrigieren Sie fehlende Angaben.");
     }
+    validateForm();
+
 }
+
 
 // Event listeners
 form.addEventListener('submit', function (e) {

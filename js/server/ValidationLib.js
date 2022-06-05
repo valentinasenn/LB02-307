@@ -93,5 +93,6 @@ function checkLength(id, input, min, max) {
 module.exports = {
     checkEmail,
     checkLength,
-    checkRequired
+    checkRequired,
+    ...
 }

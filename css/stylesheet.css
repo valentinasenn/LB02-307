@@ -261,7 +261,7 @@ ul {
 .team-member h4, .team-member .h4 {
 
 }
-@import url(https://fonts.googleapis.com/css?family=Alegreya+Sans:300);
+@import url('https://fonts.googleapis.com/css?family=Alegreya+Sans:300');
 
 body {
     font-family: 'Alegreya Sans', sans-serif;
