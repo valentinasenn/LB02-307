@@ -143,16 +143,6 @@ function validateForm(){
     checkCheckbox(checkbox);
 }
 
-function validateAllInputs() {
-    if (!checkRequired([name, lastname, email, password, repeatPassword, message, checkbox])) {
-        alert("Ihre Daten wurden erfolgreich erfasst.");
-    } else {
-        alert("Bitte korrigieren Sie fehlende Angaben.");
-    }
-    validateForm();
-
-}
-
 
 // Event listeners
 form.addEventListener('submit', function (e) {
